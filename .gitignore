@@ -2,11 +2,11 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-/ChessRoyale.iml
-/ChessRoyale.idea/
+.kotlin
+.idea/
+ChessRoyale.iml
 
 ### Eclipse ###
-
 .apt_generated
 .classpath
 .factorypath
@@ -30,5 +30,3 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-
-/.idea/
