@@ -1,10 +1,7 @@
 package GameLogic.Components.Cards;
 
 import GameLogic.Components.Card;
-import Util.Coordinate;
 import Util.CoordinateFunctions;
-
-import java.util.Set;
 
 /**
  * This one attacks like a pawn
@@ -19,8 +16,8 @@ public class Pitchfork implements Card {
             {0,0,0,0,0}
     };
     @Override
-    public Set<Coordinate> getAttack() {
-        return CoordinateFunctions.bitArrayToCoord(attack);
+    public int[][] getAttack() {
+        return attack;
     }
 
     @Override

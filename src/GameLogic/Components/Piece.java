@@ -26,7 +26,7 @@ public abstract class Piece {
     public int[][] getMovement(){
         return movement;
     };
-    public Set<Coordinate> getAttack(){
+    public int[][] getAttack(){
         Set<Coordinate> attack = new HashSet<>();
         for (Card c : weapons) {
             attack.addAll(c.getAttack());
