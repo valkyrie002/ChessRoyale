@@ -1,11 +1,17 @@
 package GameLogic.Player;
 
+import GameLogic.Components.Card;
 import GameLogic.Components.Player;
 import Util.Constants;
 
+import java.util.List;
+
 public class ConsoleHuman implements Player {
     PlayerData data;
-    PlayerFunctions functions;
+
+    ConsoleHuman(int playerID, List<Card> playerDeck) {
+        init(playerID, playerDeck);
+    }
 
     @Override
     public void gainElixir(int amt) {
@@ -45,8 +51,8 @@ public class ConsoleHuman implements Player {
     }
 
     @Override
-    public void initDeck() {
-        data = new PlayerData();
+    public void init(int playerID, List<Card> playerDeck) {
+        data = new PlayerData(playerID, playerDeck);
     }
 
     @Override
