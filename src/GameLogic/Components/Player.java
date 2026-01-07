@@ -2,6 +2,8 @@ package GameLogic.Components;
 
 import GameLogic.Player.PlayerData;
 
+import java.util.List;
+
 /**
  * A game player
  */
@@ -16,7 +18,7 @@ public interface Player {
     public int attack();
     public String winText();
     //Call this in constructor
-    public void initDeck();
+    public void init(int playerID, List<Card> playerDeck);
     public PlayerData getData();
 
 

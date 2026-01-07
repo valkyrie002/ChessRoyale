@@ -14,11 +14,21 @@ public class GameBoard implements Board {
     // Board dimensions
     private static final int HEIGHT = 7;
     private static final int WIDTH = 7;
+    private static final int TERRITORY_HEIGHT = 3;
     private static final Coordinate DIMENSIONS = new Coordinate(HEIGHT, WIDTH);
-    private
-
     // The board is a 2D array of Pieces? // TODO: could turn this into GameSquare Objects, which have piece and coordinate
     private final  Piece[][] board;
+    private Set<Coordinate> obstacles;
+
+    private final char[][] INIT_BOARD = {
+            {'s', 's', 'h', 'c', 'r', 'r', 'k' },
+            {'t', 't', 't', 't', 't', 't', 't'},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {'T', 'T', 'T', 'T', 'T', 'T', 'T'},
+            {'K', 'R', 'R', 'C', 'H', 'S', 'S'}
+    };
 
     /**
      *
@@ -28,86 +38,31 @@ public class GameBoard implements Board {
         initBoard();
     }
 
-    private void initBoard(String bString) {
-
-//        //Instantiating the board
-//        for(int i = 0; i < WIDTH; i++) {
-//            for(int j = 0; j < HEIGHT; j++) {
-////                Coordinate coord = new Coordinate(i, j);
-//                board[i][j] = null;
-//            }
-//        }
-//
-//        // Instantiate Triangles
-//        for (int i = 0; i < WIDTH * 2; i++) {
-//            // TODO, are we cool with Pieces knowing their coordinates rather than coordinates knowing their pieces?
-//            // One Triangle per column in the second and second from last rows
-//            int xCoord = i / 2;
-//            if (i % 2 == 0) {
-//                // Even Triangles in second row
-//                board[1][xCoord] = new Triangle(); //TODO: pieces should be associated with player (add constructor to all Pieces which takes in int)
-//            } {
-//                // Odd Triangles in second to last row
-//                board[HEIGHT - 2][xCoord] = new Triangle(); //TODO: pieces should be associated with player (add constructor to all Pieces which takes in int)
-//            }
-//        }
-//
-//        // Squares
-//        // Black
-//        board[0][0] = new Square();
-//        board[0][1] = new Square();
-//        // White
-//        board[HEIGHT - 1][WIDTH - 1] = new Square();
-//        board[HEIGHT - 1][WIDTH - 1] = new Square();
-//
-//        // Rhombuses
-//        // Black
-//        board[0][WIDTH - 2] = new Rhombus();
-//        board[0][1] = new Rhombus();
-//        // White
-//        board[HEIGHT - 1][WIDTH - 1] = new Rhombus();
-//        board[HEIGHT - 1][WIDTH - 1] = new Rhombus();
-
-        // Hexagon
-        // Circle
-        // King
-
-//        // Squares in opposite corners
-//        board[0][0] = new Square();
-//        board[HEIGHT - 1][WIDTH - 1] = new Square();
-//
-//        // Rhombuses in opposite corners
-//        board[0][WIDTH - 1] = new Rhombus();
-//        board[HEIGHT - 1][0] = new Rhombus();
-//
-//        // Circles in opposite corners
-//        board[0][WIDTH - 2] = new Circle();
-//        board[HEIGHT - 1][1] = new Circle();
-//
-//        // Hexagons in opposite corners
-//        board[0][WIDTH - 2] = new Hexagon();
-//        board[HEIGHT - 1][1] = new Hexagon();
-
-//        // Fill Rest of topmost and bottommost rows with triangles?
-//        for (int i = 0; i < WIDTH; i++) {
-//            // Some peace of mind flags
-//            boolean flag1 = false;
-//            boolean flag2 = false;
-//
-//            if (board[0][i] == null) {
-//                // Coordinate is empty, add Triangle
-//                board[0][i] = new Triangle();
-//                flag1 = true;
-//            }
-//            if (board[HEIGHT - 1][i] == null) {
-//                // Coordinate is empty, add Triangle
-//                board[HEIGHT - 1][i] = new Triangle();
-//                flag2 = false;
-//            }
-//            if (flag1 != flag2) {
-//                System.out.println("Things are not symmetrical in Game Board Constructor");
-//            }
-//        }
+    private void initBoard() {
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                switch (INIT_BOARD[i][j]) {
+                    case 's' -> board[i][j] = new Square(1);
+                    case 't' -> board[i][j] = new Triangle(1);
+                    case 'r' -> board[i][j] = new Rhombus(1);
+                    case 'h' -> board[i][j] = new Hexagon(1);
+                    case 'c' -> board[i][j] = new Circle(1);
+                    case 'k' -> board[i][j] = new King(1);
+                    case 'S' -> board[i][j] = new Square(2);
+                    case 'T' -> board[i][j] = new Triangle(2);
+                    case 'R' -> board[i][j] = new Rhombus(2);
+                    case 'H' -> board[i][j] = new Hexagon(2);
+                    case 'C' -> board[i][j] = new Circle(2);
+                    case 'K' -> board[i][j] = new King(2);
+                    case ' ' -> board[i][j] = null;
+                    case '#' -> obstacles.add(new Coordinate(i, j));
+                    default -> {
+                        board[i][j] = null;
+                        System.out.println("WHAT ARE YOU DOING");
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -117,16 +72,28 @@ public class GameBoard implements Board {
 
     @Override
     public Set<Coordinate> getObstacles() {
-        return Set.of();
+        return obstacles;
     }
 
     @Override
     public void movePiece(int player, Coordinate source, Coordinate target) {
-
+        Piece moved = board[source.row()][source.col()];
+        board[source.row()][source.col()] = null;
+        board[target.row()][target.col()] = moved;
     }
 
     @Override
-    public void removePiece(Piece piece) {
+    public void removePiece(Coordinate coordinate) {
+        board[coordinate.row()][coordinate.col()] = null;
+    }
 
+    @Override
+    public int getTerritorySize() {
+        return TERRITORY_HEIGHT;
+    }
+
+    @Override
+    public Piece getPiece(Coordinate coordinate) {
+        return board[coordinate.row()][coordinate.col()];
     }
 }

@@ -8,5 +8,7 @@ public interface Board {
     Coordinate getDimensions();
     Set<Coordinate> getObstacles();
     void movePiece(int player, Coordinate source, Coordinate target);
-    void removePiece(Piece piece);
+    void removePiece(Coordinate coordinate);
+    int getTerritorySize();
+    Piece getPiece(Coordinate coordinate);
 }
