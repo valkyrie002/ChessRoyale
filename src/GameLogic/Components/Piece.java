@@ -1,5 +1,6 @@
 package GameLogic.Components;
 
+import Util.Constants;
 import Util.Coordinate;
 import Util.CoordinateFunctions;
 import Util.Pieces;
@@ -27,9 +28,27 @@ public abstract class Piece {
         return movement;
     };
     public int[][] getAttack(){
-        Set<Coordinate> attack = new HashSet<>();
+        int[][] attack = new int[Constants.ARRAY_SIZE][Constants.ARRAY_SIZE];
+
+        for (int i = 0; i < Constants.ARRAY_SIZE; i++) {
+            for (int j = 0; j < Constants.ARRAY_SIZE; j++) {
+                // Set base attack (currently only for hexagon)
+                if (movement[i][j] == 2) {
+                    attack[i][j] = 1;
+                }
+            }
+        }
+
+        // Update attack based on all equipped weapons
         for (Card c : weapons) {
-            attack.addAll(c.getAttack());
+            int[][] cAttack = c.getAttack();
+            for (int i = 0; i < Constants.ARRAY_SIZE; i++) {
+                for (int j = 0; j < Constants.ARRAY_SIZE; j++) {
+                    if (attack[i][j] < cAttack[i][j]) {
+                        attack[i][j] = cAttack[i][j];
+                    }
+                }
+            }
         }
         return attack;
     }
