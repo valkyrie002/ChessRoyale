@@ -8,7 +8,8 @@ public enum Pieces {
     SQUARE(  2, 2),
     RHOMBUS( 3, 3),
     HEXAGON( 4, 1),
-    CIRCLE(  5, 4);
+    CIRCLE(  5, 4),
+    KING(    6, 0);
 
     // The number associated with this Piece
     private final int value;
