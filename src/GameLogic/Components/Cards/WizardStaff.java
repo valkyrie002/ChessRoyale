@@ -1,10 +1,7 @@
 package GameLogic.Components.Cards;
 
 import GameLogic.Components.Card;
-import Util.Coordinate;
 import Util.CoordinateFunctions;
-
-import java.util.Set;
 
 /**
  * The ultimate weapon
@@ -12,15 +9,15 @@ import java.util.Set;
 public class WizardStaff implements Card {
     private final int cost = 4;
     private final int[][] attack = {
-            {1,0,1,0,1},
+            {2,0,2,0,2},
             {0,1,1,1,0},
-            {1,1,0,1,1},
+            {2,1,0,1,2},
             {0,1,1,1,0},
-            {1,0,1,0,1}
+            {2,0,2,0,2}
     };
     @Override
-    public Set<Coordinate> getAttack(Coordinate ref) {
-        return CoordinateFunctions.bitArrayToCoord(attack,ref);
+    public int[][] getAttack() {
+        return attack;
     }
 
     @Override

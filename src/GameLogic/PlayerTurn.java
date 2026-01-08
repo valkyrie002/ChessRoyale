@@ -1,15 +1,16 @@
 package GameLogic;
 
-import GameLogic.Components.Player;
+import GameLogic.Player.Player;
+import Util.Constants;
 
 /**
  * Class for player turn methods
  */
 public class PlayerTurn {
+
     public static int playerTurn(Player player, int phase) {
         resourceGain(player,phase);
-        resourceAllocate(player,phase);
-        return armyCommand(player,phase);
+        return takeTurn(player,phase);
     }
 
     /**
@@ -22,7 +23,9 @@ public class PlayerTurn {
         switch (phase) {
             case 1 -> {
                 player.gainElixir(1);
-                player.drawCard(1);
+                if (player.handSize() < Constants.HAND_SIZE){
+                    player.drawCard(1);
+                }
             }
             case 2 -> {
                 player.gainElixir(2);
@@ -30,9 +33,14 @@ public class PlayerTurn {
             }
         }
     }
-    public static void resourceAllocate(Player player, int phase){}
-    public static int armyCommand(Player player, int phase){
-        return 0;
-    }
 
+    /**
+     * Part two of a player's turn, allocation of resources
+     * -> await input
+     * @param player
+     * @param phase
+     */
+    public static int takeTurn(Player player, int phase){
+        return player.takeTurn();
+    }
 }

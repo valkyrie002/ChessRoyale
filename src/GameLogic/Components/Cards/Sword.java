@@ -1,10 +1,7 @@
 package GameLogic.Components.Cards;
 
 import GameLogic.Components.Card;
-import Util.Coordinate;
 import Util.CoordinateFunctions;
-
-import java.util.Set;
 
 public class Sword implements Card {
     private final int cost = 2;
@@ -16,8 +13,8 @@ public class Sword implements Card {
             {0,0,0,0,0}
     };
     @Override
-    public Set<Coordinate> getAttack(Coordinate ref) {
-        return CoordinateFunctions.bitArrayToCoord(attack,ref);
+    public int[][] getAttack() {
+        return attack;
     }
 
     @Override

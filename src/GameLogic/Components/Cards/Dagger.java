@@ -1,10 +1,7 @@
 package GameLogic.Components.Cards;
 
 import GameLogic.Components.Card;
-import Util.Coordinate;
 import Util.CoordinateFunctions;
-
-import java.util.Set;
 
 /**
  * As basic as weapons get
@@ -19,8 +16,8 @@ public class Dagger implements Card {
             {0,0,0,0,0}
     };
     @Override
-    public Set<Coordinate> getAttack(Coordinate ref) {
-        return CoordinateFunctions.bitArrayToCoord(attack,ref);
+    public int[][] getAttack() {
+        return attack;
     }
 
     @Override

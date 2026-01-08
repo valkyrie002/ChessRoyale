@@ -13,9 +13,12 @@ public class PlayerData {
     protected List<Card> playerDeck;
     protected List<Card> playerHand;
     protected int elixir;
-    public PlayerData() {
-        playerDeck = new ArrayList<>();
+    protected final int playerID;
+
+    public PlayerData(int playerID,List<Card> playerDeck) {
+        this.playerDeck = playerDeck;
         playerHand = new ArrayList<>();
         elixir = 0;
+        this.playerID = playerID;
     }
 }

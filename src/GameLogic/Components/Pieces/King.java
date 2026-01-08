@@ -13,55 +13,15 @@ import java.util.Set;
 /**
  * The big boy himself
  */
-public class King implements Piece {
-    private final int capacity = Pieces.KING.getCapacity();
-    private final int[][] movement = {
+public class King extends Piece {
+    private static final int[][] MOVEMENT = {
             {0,0,0,0,0},
             {0,1,1,1,0},
             {0,1,0,1,0},
             {0,1,1,1,0},
             {0,0,0,0,0}
     };
-    private List<Card> weapons;
-    private final int playerID;
-
-    public King(int playerID) {
-        this.playerID = playerID;
-    }
-
-    @Override
-    public Set<Coordinate> getMovement() {
-        //TODO: Implement this one differently
-        return CoordinateFunctions.bitArrayToCoord(movement);
-    }
-
-    @Override
-    public Set<Coordinate> getAttack() {
-        Set<Coordinate> attack = new HashSet<>();
-        for (Card c : weapons) {
-            attack.addAll(c.getAttack());
-        }
-        return attack;
-    }
-
-    @Override
-    public List<Card> getWeapons() {
-        return weapons;
-    }
-
-    @Override
-    public void takeDamage() {
-        weapons.remove(0);
-        //TODO: Move to discard?
-    }
-
-    @Override
-    public int getPlayerID() {
-        return playerID;
-    }
-
-    @Override
-    public int getCapacity() {
-        return capacity;
+    public King(int playerID){
+        super(playerID, Pieces.KING.getCapacity(), MOVEMENT);
     }
 }
