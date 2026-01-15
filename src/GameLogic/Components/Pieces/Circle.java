@@ -1,7 +1,6 @@
 package GameLogic.Components.Pieces;
 
 import GameLogic.Components.Piece;
-import Util.Pieces;
 
 /**
  * Mr potential himself

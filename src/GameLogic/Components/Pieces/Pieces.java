@@ -1,4 +1,4 @@
-package Util;
+package GameLogic.Components.Pieces;
 
 /**
  * All the pieces in the game have a constant cost id number
