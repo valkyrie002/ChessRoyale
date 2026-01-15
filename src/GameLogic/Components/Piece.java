@@ -1,14 +1,9 @@
 package GameLogic.Components;
 
 import Util.Constants;
-import Util.Coordinate;
-import Util.CoordinateFunctions;
-import Util.Pieces;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 public abstract class Piece {
     protected final int capacity;
