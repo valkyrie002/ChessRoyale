@@ -87,12 +87,23 @@ public class GameBoard implements Board {
         return obstacles;
     }
 
+    /**
+     * Moves a piece on the board
+     * @param source coordinate
+     * @param target coordinate
+     * @return
+     * 0 - success
+     * 1 - target obstructed
+     * 2 - source invalid
+     * 3 - target invalid
+     */
     //TODO: handle safety, integer return value based on result
     @Override
-    public void movePiece(int player, Coordinate source, Coordinate target) {
+    public int movePiece(Coordinate source, Coordinate target) {
         Piece moved = board[source.row()][source.col()];
         board[source.row()][source.col()] = null;
         board[target.row()][target.col()] = moved;
+        return 1;
     }
 
     @Override
@@ -112,7 +123,7 @@ public class GameBoard implements Board {
 
     //TODO: handle safety, integer return value based on result
     @Override
-    public int attack(int player, Coordinate source, Coordinate target) {
+    public int attack(Coordinate source, Coordinate target) {
         //TODO
         return 0;
     }
