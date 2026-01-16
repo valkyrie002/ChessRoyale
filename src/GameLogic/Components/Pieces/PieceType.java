@@ -3,7 +3,7 @@ package GameLogic.Components.Pieces;
 /**
  * All the pieces in the game have a constant cost id number
  */
-public enum Pieces {
+public enum PieceType {
     TRIANGLE(1, 1),
     SQUARE(  2, 2),
     RHOMBUS( 3, 3),
@@ -21,7 +21,7 @@ public enum Pieces {
      * An enum constructor
      * @param id piece identification number
      */
-    Pieces(int id, int capacity) {
+    PieceType(int id, int capacity) {
         this.value = id;
         this.capacity = capacity;
     }

@@ -14,6 +14,6 @@ public class Square extends Piece {
             {0,0,1,0,0}
     };
     public Square(int playerID){
-        super(playerID, Pieces.SQUARE, MOVEMENT);
+        super(playerID, PieceType.SQUARE, MOVEMENT);
     }
 }

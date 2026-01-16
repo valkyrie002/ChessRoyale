@@ -13,6 +13,6 @@ public class Hexagon extends Piece {
             {1,0,1,0,1}
     };
     public Hexagon(int playerID){
-        super(playerID, Pieces.HEXAGON, MOVEMENT);
+        super(playerID, PieceType.HEXAGON, MOVEMENT);
     }
 }

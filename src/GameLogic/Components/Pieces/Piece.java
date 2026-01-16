@@ -11,10 +11,10 @@ public abstract class Piece {
     protected final int[][] movement;
     protected final List<Card> weapons;
     protected final int playerID;
-    protected final Pieces pieceType;
+    protected final PieceType pieceType;
     protected boolean inCombat;
 
-    public Piece(int playerID, Pieces pieceType,  int[][] movement) {
+    public Piece(int playerID, PieceType pieceType, int[][] movement) {
         this.playerID = playerID;
         this.capacity = pieceType.getCapacity();
         this.movement = movement;
@@ -106,7 +106,7 @@ public abstract class Piece {
     /**
      * @return the Piece Type
      */
-    public Pieces getType() {
+    public PieceType getType() {
         return pieceType;
     }
 }
