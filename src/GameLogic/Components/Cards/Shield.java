@@ -1,8 +1,5 @@
 package GameLogic.Components.Cards;
 
-import GameLogic.Components.Card;
-import Util.CoordinateFunctions;
-
 /**
  * More of a defensive weapon
  */

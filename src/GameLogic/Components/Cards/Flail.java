@@ -1,8 +1,5 @@
 package GameLogic.Components.Cards;
 
-import GameLogic.Components.Card;
-import Util.CoordinateFunctions;
-
 public class Flail implements Card {
     private final int cost = 2;
     private final int[][] attack = {

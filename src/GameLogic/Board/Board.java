@@ -1,5 +1,6 @@
-package GameLogic.Components;
+package GameLogic.Board;
 
+import GameLogic.Components.Pieces.Piece;
 import Util.Coordinate;
 
 import java.util.Set;

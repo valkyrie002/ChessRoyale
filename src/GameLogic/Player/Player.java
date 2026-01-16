@@ -1,9 +1,9 @@
 package GameLogic.Player;
 
 import GameLogic.Board.GameBoard;
-import GameLogic.Components.Board;
-import GameLogic.Components.Card;
-import GameLogic.Components.Piece;
+import GameLogic.Board.Board;
+import GameLogic.Components.Cards.Card;
+import GameLogic.Components.Pieces.Piece;
 import UserInterface.OutputEvent;
 import UserInterface.OutputEventType;
 import UserInterface.PlayerIO;

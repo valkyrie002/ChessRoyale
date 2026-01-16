@@ -1,5 +1,6 @@
-package GameLogic.Components;
+package GameLogic.Components.Pieces;
 
+import GameLogic.Components.Cards.Card;
 import Util.Constants;
 
 import java.util.LinkedList;
