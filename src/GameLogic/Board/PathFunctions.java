@@ -1,5 +1,7 @@
 package GameLogic.Board;
 
+import GameLogic.Components.Pieces.Piece;
+import Util.Constants;
 import Util.Coordinate;
 
 import java.util.ArrayList;
@@ -8,9 +10,27 @@ import java.util.List;
 
 public class PathFunctions {
 
+    public static boolean validSrc(Coordinate source) {
+        if  (source == null){
+            return false;
+        }
 
-    public boolean validMove(Coordinate init, Coordinate dest) {
+        if (source.row() < 0 || source.col() < 0 ||
+                source.row() > GameBoard.getInstance().getDimensions().row() ||
+                source.col() > GameBoard.getInstance().getDimensions().col()){
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean validDest(Coordinate init, Coordinate dest) {
         Board gb = GameBoard.getInstance();
+        Piece p = gb.getPiece(init);
+        int[][] m = p.getMovement();
+        int deltaX = dest.col() - init.col();
+        int deltaY = dest.row() - init.row();
+        return m[Constants.CENTER_OF_ARRAY + deltaX][Constants.CENTER_OF_ARRAY + deltaY] != 0;
     }
 
     /**
@@ -20,7 +40,7 @@ public class PathFunctions {
      * @return true if the path between the two coordinates contains a piece,
      *         false otherwise
      */
-    public boolean obstructed(Coordinate fst, Coordinate snd) {
+    public static boolean obstructed(Coordinate fst, Coordinate snd) {
         List<Coordinate> path = getPathPlusDest(fst, snd);
 
         if (path == null) return false; // No path

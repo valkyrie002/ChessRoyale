@@ -4,6 +4,7 @@ import GameLogic.Components.Pieces.Piece;
 import GameLogic.Components.Pieces.*;
 import Util.Coordinate;
 
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -96,13 +97,25 @@ public class GameBoard implements Board {
      * 2 - source invalid
      * 3 - target invalid
      */
-    //TODO: handle safety, integer return value based on result
     @Override
     public int movePiece(Coordinate source, Coordinate target) {
         Piece moved = board[source.row()][source.col()];
         board[source.row()][source.col()] = null;
         board[target.row()][target.col()] = moved;
-        return 1;
+
+        if (!PathFunctions.validSrc(source)){
+            return 2;
+        }
+
+        if (!PathFunctions.validDest(source, target)) {
+            return 3;
+        }
+
+        if (PathFunctions.obstructed(source, target)) {
+            return 1;
+        }
+
+        return 0;
     }
 
     @Override
