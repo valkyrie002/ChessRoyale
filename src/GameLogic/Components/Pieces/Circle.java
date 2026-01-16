@@ -15,6 +15,6 @@ public class Circle extends Piece {
     };
 
     public Circle(int playerID){
-        super(playerID, Pieces.CIRCLE.getCapacity(), MOVEMENT);
+        super(playerID, Pieces.CIRCLE, MOVEMENT);
     }
 }

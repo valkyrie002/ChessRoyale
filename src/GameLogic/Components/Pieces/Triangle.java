@@ -14,6 +14,6 @@ public class Triangle extends Piece {
         {0,0,0,0,0}
     };
     public Triangle(int playerID) {
-        super(playerID, Pieces.TRIANGLE.getCapacity(), MOVEMENT);
+        super(playerID, Pieces.TRIANGLE, MOVEMENT);
     }
 }

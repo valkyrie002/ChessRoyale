@@ -11,12 +11,14 @@ public abstract class Piece {
     protected final int[][] movement;
     protected final List<Card> weapons;
     protected final int playerID;
+    protected final Pieces pieceType;
     protected boolean inCombat;
 
-    public Piece(int playerID, int capacity,  int[][] movement) {
+    public Piece(int playerID, Pieces pieceType,  int[][] movement) {
         this.playerID = playerID;
-        this.capacity = capacity;
+        this.capacity = pieceType.getCapacity();
         this.movement = movement;
+        this.pieceType = pieceType;
         inCombat = false;
         weapons = new LinkedList<>();
     }
@@ -99,5 +101,12 @@ public abstract class Piece {
         weapons.add(card);
 
         return 0;
+    }
+
+    /**
+     * @return the Piece Type
+     */
+    public Pieces getType() {
+        return pieceType;
     }
 }

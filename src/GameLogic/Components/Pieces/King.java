@@ -12,6 +12,6 @@ public class King extends Piece {
             {0,0,0,0,0}
     };
     public King(int playerID){
-        super(playerID, Pieces.KING.getCapacity(), MOVEMENT);
+        super(playerID, Pieces.KING, MOVEMENT);
     }
 }
