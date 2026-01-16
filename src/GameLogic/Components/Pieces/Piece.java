@@ -109,4 +109,9 @@ public abstract class Piece {
     public PieceType getType() {
         return pieceType;
     }
+
+    @Override
+    public String toString() {
+        return pieceType.toString();
+    }
 }

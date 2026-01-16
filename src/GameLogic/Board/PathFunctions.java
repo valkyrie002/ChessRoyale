@@ -24,13 +24,22 @@ public class PathFunctions {
         return true;
     }
 
-    public static boolean validDest(Coordinate init, Coordinate dest) {
+    public static boolean validDest(int playerID, Coordinate init, Coordinate dest) {
         Board gb = GameBoard.getInstance();
         Piece p = gb.getPiece(init);
         int[][] m = p.getMovement();
         int deltaX = dest.col() - init.col();
         int deltaY = dest.row() - init.row();
-        return m[Constants.CENTER_OF_ARRAY + deltaX][Constants.CENTER_OF_ARRAY + deltaY] != 0;
+        if (playerID == Constants.PLAYER_ONE) {
+            // Player one's on bottom, check normal
+            return m[Constants.CENTER_OF_ARRAY + deltaX][Constants.CENTER_OF_ARRAY + deltaY] != 0;
+
+        } else if (playerID == Constants.PLAYER_TWO) {
+            // Player two's on top, check mirror only y
+            return m[Constants.CENTER_OF_ARRAY + deltaX][Constants.CENTER_OF_ARRAY - deltaY] != 0;
+        }
+        System.out.println("Use correct player id in PathFunctions.validDest()");
+        return false;
     }
 
     /**

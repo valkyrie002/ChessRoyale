@@ -2,9 +2,9 @@ package GameLogic.Board;
 
 import GameLogic.Components.Pieces.Piece;
 import GameLogic.Components.Pieces.*;
+import Util.Constants;
 import Util.Coordinate;
 
-import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -51,21 +51,24 @@ public class GameBoard implements Board {
     }
 
     private void initBoard() {
+        int p1 = Constants.PLAYER_ONE;
+        int p2 = Constants.PLAYER_TWO;
+
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 switch (INIT_BOARD[i][j]) {
-                    case 's' -> board[i][j] = new Square(1);
-                    case 't' -> board[i][j] = new Triangle(1);
-                    case 'r' -> board[i][j] = new Rhombus(1);
-                    case 'h' -> board[i][j] = new Hexagon(1);
-                    case 'c' -> board[i][j] = new Circle(1);
-                    case 'k' -> board[i][j] = new King(1);
-                    case 'S' -> board[i][j] = new Square(2);
-                    case 'T' -> board[i][j] = new Triangle(2);
-                    case 'R' -> board[i][j] = new Rhombus(2);
-                    case 'H' -> board[i][j] = new Hexagon(2);
-                    case 'C' -> board[i][j] = new Circle(2);
-                    case 'K' -> board[i][j] = new King(2);
+                    case 's' -> board[i][j] = new Square(p2);
+                    case 't' -> board[i][j] = new Triangle(p2);
+                    case 'r' -> board[i][j] = new Rhombus(p2);
+                    case 'h' -> board[i][j] = new Hexagon(p2);
+                    case 'c' -> board[i][j] = new Circle(p2);
+                    case 'k' -> board[i][j] = new King(p2);
+                    case 'S' -> board[i][j] = new Square(p1);
+                    case 'T' -> board[i][j] = new Triangle(p1);
+                    case 'R' -> board[i][j] = new Rhombus(p1);
+                    case 'H' -> board[i][j] = new Hexagon(p1);
+                    case 'C' -> board[i][j] = new Circle(p1);
+                    case 'K' -> board[i][j] = new King(p1);
                     case ' ' -> board[i][j] = null;
                     case '#' -> obstacles.add(new Coordinate(i, j));
                     default -> {
@@ -99,15 +102,13 @@ public class GameBoard implements Board {
      */
     @Override
     public int movePiece(Coordinate source, Coordinate target) {
-        Piece moved = board[source.row()][source.col()];
-        board[source.row()][source.col()] = null;
-        board[target.row()][target.col()] = moved;
+
 
         if (!PathFunctions.validSrc(source)){
             return 2;
         }
 
-        if (!PathFunctions.validDest(source, target)) {
+        if (!PathFunctions.validDest(1, source, target)) {
             return 3;
         }
 
@@ -115,6 +116,10 @@ public class GameBoard implements Board {
             return 1;
         }
 
+        Piece moved = board[source.row()][source.col()];
+        System.out.println(moved);
+        board[source.row()][source.col()] = null;
+        board[target.row()][target.col()] = moved;
         return 0;
     }
 
@@ -140,8 +145,64 @@ public class GameBoard implements Board {
         return 0;
     }
 
+    /**
+     * @return string rep of the board
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                Piece p = board[i][j];
+                if (p == null) {
+                    sb.append(".");
+                    continue;
+                }
+                switch (p.getType()) {
+                    case CIRCLE -> {
+                        if (p.getPlayerID() == Constants.PLAYER_ONE) {
+                            sb.append("C");
+                        } else {
+                            sb.append("c");
+                        }
+                    }
+                    case TRIANGLE -> {
+                        if (p.getPlayerID() == Constants.PLAYER_ONE) {
+                            sb.append("T");
+                        } else {
+                            sb.append("t");
+                        }
+                    }
+                    case HEXAGON -> {
+                        if (p.getPlayerID() == Constants.PLAYER_ONE) {
+                            sb.append("H");
+                        } else {
+                            sb.append("h");
+                        }
+                    }
+                    case SQUARE -> {
+                        if (p.getPlayerID() == Constants.PLAYER_ONE) {
+                            sb.append("S");
+                        } else {
+                            sb.append("s");
+                        }
+                    }
+                    case KING -> {
+                        if (p.getPlayerID() == Constants.PLAYER_ONE) {
+                            sb.append("K");
+                        } else {
+                            sb.append("k");
+                        }
+                    }
+                }
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
+
     static void main() {
-//        GameBoard gameBoard = new GameBoard();
+        GameBoard gameBoard = new GameBoard();
 //        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(2, 2)));
 //        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(3, 3)));
 //        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(2, 3)));
@@ -151,6 +212,13 @@ public class GameBoard implements Board {
 //        System.out.println(gameBoard.obstructed(new Coordinate(0, 0), new Coordinate(2, 0)));
 //        System.out.println(gameBoard.obstructed(new Coordinate(1, 0), new Coordinate(2, 0)));
 //        System.out.println(gameBoard.obstructed(new Coordinate(1, 0), new Coordinate(3, 2)));
+        System.out.println(gameBoard.movePiece(new Coordinate(1, 1), new Coordinate(2, 2)));
+        System.out.println(gameBoard);
+        System.out.println(gameBoard.movePiece(new Coordinate(HEIGHT - 1, 1), new Coordinate(HEIGHT - 2, 1)));
+        System.out.println(gameBoard);
+
+        System.out.println(gameBoard.movePiece(new Coordinate(1, 1), new Coordinate(2, 1)));
+        System.out.println(gameBoard);
 
 
     }
