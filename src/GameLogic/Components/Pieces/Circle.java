@@ -1,7 +1,5 @@
 package GameLogic.Components.Pieces;
 
-import GameLogic.Components.Piece;
-
 /**
  * Mr potential himself
  * this one has no base movement
@@ -17,6 +15,6 @@ public class Circle extends Piece {
     };
 
     public Circle(int playerID){
-        super(playerID, Pieces.CIRCLE.getCapacity(), MOVEMENT);
+        super(playerID, PieceType.CIRCLE, MOVEMENT);
     }
 }

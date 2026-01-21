@@ -1,9 +1,9 @@
 package GameLogic.Player;
 
 import GameLogic.Board.GameBoard;
-import GameLogic.Components.Board;
-import GameLogic.Components.Card;
-import GameLogic.Components.Piece;
+import GameLogic.Board.Board;
+import GameLogic.Components.Cards.Card;
+import GameLogic.Components.Pieces.Piece;
 import UserInterface.OutputEvent;
 import UserInterface.OutputEventType;
 import UserInterface.PlayerIO;
@@ -75,8 +75,8 @@ public class Player {
                 PlayerIO.PieceAction pieceAction =  (PlayerIO.PieceAction) action;
                 switch (pieceAction.actionType) {
                     //TODO: method for playerIO output events
-                    case MOVE -> handleMovement(pieceAction);
-                    case ATTACK -> returnVal = handleAttack(pieceAction);
+                    case MOVE -> moveAndOutputEvent(pieceAction);
+                    case ATTACK -> returnVal = attackAndOutputEvent(pieceAction);
                 }
             } else {
                 System.out.println("What are you doing");
@@ -141,14 +141,15 @@ public class Player {
         playerIO.notifyEvent(e);
     }
 
-    private int handleAttack(PlayerIO.PieceAction attack) {
+    private int attackAndOutputEvent(PlayerIO.PieceAction attack) {
         // TODO safety precautions
-        return board.attack(data.playerID, attack.source, attack.destination);
+        // TODO output event
+        return board.attack(attack.source, attack.destination);
     }
 
-    private void handleMovement(PlayerIO.PieceAction movement) {
-        //TODO integer return value based on board call
-        board.movePiece(data.playerID, movement.source, movement.destination);
+    private int moveAndOutputEvent(PlayerIO.PieceAction movement) {
+        // TODO output event
+        return board.movePiece(movement.source, movement.destination);
     }
 
     private void playCards(int limit) {

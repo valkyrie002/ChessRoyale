@@ -1,4 +1,4 @@
-package GameLogic.Components;
+package GameLogic.Components.Cards;
 
 public interface Card {
     int[][] getAttack();

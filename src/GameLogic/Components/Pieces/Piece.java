@@ -1,5 +1,6 @@
-package GameLogic.Components;
+package GameLogic.Components.Pieces;
 
+import GameLogic.Components.Cards.Card;
 import Util.Constants;
 
 import java.util.LinkedList;
@@ -10,12 +11,14 @@ public abstract class Piece {
     protected final int[][] movement;
     protected final List<Card> weapons;
     protected final int playerID;
+    protected final PieceType pieceType;
     protected boolean inCombat;
 
-    public Piece(int playerID, int capacity,  int[][] movement) {
+    public Piece(int playerID, PieceType pieceType, int[][] movement) {
         this.playerID = playerID;
-        this.capacity = capacity;
+        this.capacity = pieceType.getCapacity();
         this.movement = movement;
+        this.pieceType = pieceType;
         inCombat = false;
         weapons = new LinkedList<>();
     }
@@ -98,5 +101,17 @@ public abstract class Piece {
         weapons.add(card);
 
         return 0;
+    }
+
+    /**
+     * @return the Piece Type
+     */
+    public PieceType getType() {
+        return pieceType;
+    }
+
+    @Override
+    public String toString() {
+        return pieceType.toString();
     }
 }

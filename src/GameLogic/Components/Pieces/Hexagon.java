@@ -1,7 +1,5 @@
 package GameLogic.Components.Pieces;
 
-import GameLogic.Components.Piece;
-
 /**
  * The amazon
  * a fierce warrior with little weapon wielding ability
@@ -15,6 +13,6 @@ public class Hexagon extends Piece {
             {1,0,1,0,1}
     };
     public Hexagon(int playerID){
-        super(playerID, Pieces.HEXAGON.getCapacity(), MOVEMENT);
+        super(playerID, PieceType.HEXAGON, MOVEMENT);
     }
 }

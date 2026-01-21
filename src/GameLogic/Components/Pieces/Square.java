@@ -1,7 +1,5 @@
 package GameLogic.Components.Pieces;
 
-import GameLogic.Components.Piece;
-
 /**
  * BTO - Be there or be square...
  * vertical/horizontal mover
@@ -16,6 +14,6 @@ public class Square extends Piece {
             {0,0,1,0,0}
     };
     public Square(int playerID){
-        super(playerID, Pieces.SQUARE.getCapacity(), MOVEMENT);
+        super(playerID, PieceType.SQUARE, MOVEMENT);
     }
 }

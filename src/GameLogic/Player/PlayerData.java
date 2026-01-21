@@ -1,6 +1,6 @@
 package GameLogic.Player;
 
-import GameLogic.Components.Card;
+import GameLogic.Components.Cards.Card;
 
 import java.util.ArrayList;
 import java.util.List;

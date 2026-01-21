@@ -1,8 +1,8 @@
 package GameLogic.Board;
 
-import GameLogic.Components.Board;
-import GameLogic.Components.Piece;
+import GameLogic.Components.Pieces.Piece;
 import GameLogic.Components.Pieces.*;
+import Util.Constants;
 import Util.Coordinate;
 
 import java.util.*;
@@ -51,21 +51,24 @@ public class GameBoard implements Board {
     }
 
     private void initBoard() {
+        int p1 = Constants.PLAYER_ONE;
+        int p2 = Constants.PLAYER_TWO;
+
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 switch (INIT_BOARD[i][j]) {
-                    case 's' -> board[i][j] = new Square(1);
-                    case 't' -> board[i][j] = new Triangle(1);
-                    case 'r' -> board[i][j] = new Rhombus(1);
-                    case 'h' -> board[i][j] = new Hexagon(1);
-                    case 'c' -> board[i][j] = new Circle(1);
-                    case 'k' -> board[i][j] = new King(1);
-                    case 'S' -> board[i][j] = new Square(2);
-                    case 'T' -> board[i][j] = new Triangle(2);
-                    case 'R' -> board[i][j] = new Rhombus(2);
-                    case 'H' -> board[i][j] = new Hexagon(2);
-                    case 'C' -> board[i][j] = new Circle(2);
-                    case 'K' -> board[i][j] = new King(2);
+                    case 's' -> board[i][j] = new Square(p2);
+                    case 't' -> board[i][j] = new Triangle(p2);
+                    case 'r' -> board[i][j] = new Rhombus(p2);
+                    case 'h' -> board[i][j] = new Hexagon(p2);
+                    case 'c' -> board[i][j] = new Circle(p2);
+                    case 'k' -> board[i][j] = new King(p2);
+                    case 'S' -> board[i][j] = new Square(p1);
+                    case 'T' -> board[i][j] = new Triangle(p1);
+                    case 'R' -> board[i][j] = new Rhombus(p1);
+                    case 'H' -> board[i][j] = new Hexagon(p1);
+                    case 'C' -> board[i][j] = new Circle(p1);
+                    case 'K' -> board[i][j] = new King(p1);
                     case ' ' -> board[i][j] = null;
                     case '#' -> obstacles.add(new Coordinate(i, j));
                     default -> {
@@ -87,12 +90,37 @@ public class GameBoard implements Board {
         return obstacles;
     }
 
-    //TODO: handle safety, integer return value based on result
+    /**
+     * Moves a piece on the board
+     * @param source coordinate
+     * @param target coordinate
+     * @return
+     * 0 - success
+     * 1 - target obstructed
+     * 2 - source invalid
+     * 3 - target invalid
+     */
     @Override
-    public void movePiece(int player, Coordinate source, Coordinate target) {
+    public int movePiece(Coordinate source, Coordinate target) {
+
+
+        if (!PathFunctions.validSrc(source)){
+            return 2;
+        }
+
+        if (!PathFunctions.validDest(1, source, target)) {
+            return 3;
+        }
+
+        if (PathFunctions.obstructed(source, target)) {
+            return 1;
+        }
+
         Piece moved = board[source.row()][source.col()];
+        System.out.println(moved);
         board[source.row()][source.col()] = null;
         board[target.row()][target.col()] = moved;
+        return 0;
     }
 
     @Override
@@ -112,156 +140,85 @@ public class GameBoard implements Board {
 
     //TODO: handle safety, integer return value based on result
     @Override
-    public int attack(int player, Coordinate source, Coordinate target) {
+    public int attack(Coordinate source, Coordinate target) {
         //TODO
         return 0;
     }
 
     /**
-     * does the space between the two coordinates contain a piece?
-     * @param fst the initial coordinate
-     * @param snd the final coordinate
-     * @return true if the path between the two coordinates contains a piece,
-     *         false otherwise
+     * @return string rep of the board
      */
-    private boolean obstructed(Coordinate fst, Coordinate snd) {
-        List<Coordinate> path = getPath(fst, snd);
-
-        if (path == null) return false; // No path
-
-        /* If any of the positions in the path contains a piece, then the path
-         * is obstructed */
-        for (Coordinate coord : path) {
-            if (board[coord.row()][coord.col()] != null) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     *  Get path from one coordinate to another if it exists
-     *      * direct paths only: straight lines and diagonals)
-     *      * Path includes dest, but not init
-     * @param init the initial coordinate
-     * @param dest the destination coordinate
-     * @return A list of coordinates starting at init and ending at dest
-     */
-    private static List<Coordinate> getPath(Coordinate init, Coordinate dest) {
-        int deltaY = Math.abs(dest.row() - init.row());
-        int deltaX = Math.abs(dest.col() - init.col());
-
-        if (init.equals(dest)) {
-            // Same coordinate, empty path
-            // TODO: should this be null?
-            return new LinkedList<>();
-        }
-
-
-        if (deltaY <= 1 && deltaX <= 1) {
-            // init and dest are "adjacent", path is simply dest
-            ArrayList<Coordinate> path = new ArrayList<>();
-            path.add(dest);
-            return path;
-        }
-
-        // init and dest in the same column
-        if (deltaX == 0){
-            List<Coordinate> path = new ArrayList<>();
-
-            if (dest.row() < init.row()) {
-                // destination has lower row number => decrement
-                for (int i = init.row() - 1; i >= dest.row(); i--) {
-                    path.add(new Coordinate(i, init.col()));
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                Piece p = board[i][j];
+                if (p == null) {
+                    sb.append(".");
+                    continue;
                 }
-
-            } else {
-                // destination has higher row number, increment
-                for (int i = init.row() + 1; i <= dest.row(); i++) {
-                    path.add(new Coordinate(i, init.col()));
+                switch (p.getType()) {
+                    case CIRCLE -> {
+                        if (p.getPlayerID() == Constants.PLAYER_ONE) {
+                            sb.append("C");
+                        } else {
+                            sb.append("c");
+                        }
+                    }
+                    case TRIANGLE -> {
+                        if (p.getPlayerID() == Constants.PLAYER_ONE) {
+                            sb.append("T");
+                        } else {
+                            sb.append("t");
+                        }
+                    }
+                    case HEXAGON -> {
+                        if (p.getPlayerID() == Constants.PLAYER_ONE) {
+                            sb.append("H");
+                        } else {
+                            sb.append("h");
+                        }
+                    }
+                    case SQUARE -> {
+                        if (p.getPlayerID() == Constants.PLAYER_ONE) {
+                            sb.append("S");
+                        } else {
+                            sb.append("s");
+                        }
+                    }
+                    case KING -> {
+                        if (p.getPlayerID() == Constants.PLAYER_ONE) {
+                            sb.append("K");
+                        } else {
+                            sb.append("k");
+                        }
+                    }
                 }
             }
-
-            // return path from init to destination
-            return path;
+            sb.append('\n');
         }
-
-        // init and dest in the same row
-        if (deltaY == 0){
-            List<Coordinate> path = new ArrayList<>();
-
-            if (dest.col() < init.col()) {
-                // destination has lower column number => decrement
-                for (int i = init.col() - 1; i >= dest.col(); i--) {
-                    path.add(new Coordinate(init.row(), i));
-                }
-
-            } else {
-                // destination has higher column number => increment
-                for (int i = init.col() + 1; i <= dest.col(); i++) {
-                    path.add(new Coordinate(init.row(), i));
-                }
-            }
-
-            // return path from init to destination
-            return path;
-        }
-
-        // init and dest have a diagonal path between them
-        if (deltaX == deltaY){
-            boolean incX = false; // incrementing or decrementing x?
-            boolean incY = false; // incrementing or decrementing y?
-            List<Coordinate> path = new ArrayList<>();
-
-
-            if (dest.row() > init.row()) {
-                // incrementing y
-                incY = true;
-            }
-            if (dest.col() > init.col()) {
-                // incrementing x
-                incX = true;
-            }
-
-            int offset = 1;
-            int x;
-            int y;
-
-            // Create the path
-            while (offset <= deltaX){
-                if (incX) {
-                    x = init.row() + offset;
-                } else {
-                    x = init.row() - offset;
-                }
-
-                if (incY) {
-                    y = init.row() + offset;
-                } else {
-                    y = init.row() - offset;
-                }
-                path.add(new Coordinate(y, x));
-                offset++;
-            }
-
-            return path;
-        }
-
-        // No such path exists, return null
-        return null;
+        return sb.toString();
     }
 
     static void main() {
         GameBoard gameBoard = new GameBoard();
-        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(2, 2)));
-        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(3, 3)));
-        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(2, 3)));
-        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(1, 4)));
-        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(4, 1)));
-        System.out.println(gameBoard.obstructed(new Coordinate(1, 1), new Coordinate(1, 4)));
-        System.out.println(gameBoard.obstructed(new Coordinate(0, 0), new Coordinate(2, 0)));
-        System.out.println(gameBoard.obstructed(new Coordinate(1, 0), new Coordinate(2, 0)));
-        System.out.println(gameBoard.obstructed(new Coordinate(1, 0), new Coordinate(3, 2)));
+//        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(2, 2)));
+//        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(3, 3)));
+//        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(2, 3)));
+//        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(1, 4)));
+//        System.out.println(getPath(new Coordinate(1, 1), new Coordinate(4, 1)));
+//        System.out.println(gameBoard.obstructed(new Coordinate(1, 1), new Coordinate(1, 4)));
+//        System.out.println(gameBoard.obstructed(new Coordinate(0, 0), new Coordinate(2, 0)));
+//        System.out.println(gameBoard.obstructed(new Coordinate(1, 0), new Coordinate(2, 0)));
+//        System.out.println(gameBoard.obstructed(new Coordinate(1, 0), new Coordinate(3, 2)));
+        System.out.println(gameBoard.movePiece(new Coordinate(1, 1), new Coordinate(2, 2)));
+        System.out.println(gameBoard);
+        System.out.println(gameBoard.movePiece(new Coordinate(HEIGHT - 1, 1), new Coordinate(HEIGHT - 2, 1)));
+        System.out.println(gameBoard);
+
+        System.out.println(gameBoard.movePiece(new Coordinate(1, 1), new Coordinate(2, 1)));
+        System.out.println(gameBoard);
 
 
     }

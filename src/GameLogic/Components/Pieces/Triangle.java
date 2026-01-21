@@ -1,7 +1,5 @@
 package GameLogic.Components.Pieces;
 
-import GameLogic.Components.Piece;
-
 /**
  * Evil Little Guy
  * Foot Soldier Unit
@@ -16,6 +14,6 @@ public class Triangle extends Piece {
         {0,0,0,0,0}
     };
     public Triangle(int playerID) {
-        super(playerID, Pieces.TRIANGLE.getCapacity(), MOVEMENT);
+        super(playerID, PieceType.TRIANGLE, MOVEMENT);
     }
 }

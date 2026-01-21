@@ -1,7 +1,5 @@
 package GameLogic.Components.Pieces;
 
-import GameLogic.Components.Piece;
-
 /**
  * The big boy himself
  */
@@ -14,6 +12,6 @@ public class King extends Piece {
             {0,0,0,0,0}
     };
     public King(int playerID){
-        super(playerID, Pieces.KING.getCapacity(), MOVEMENT);
+        super(playerID, PieceType.KING, MOVEMENT);
     }
 }
